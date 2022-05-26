@@ -47,12 +47,12 @@ routes.get('/',async (req,res) => {
     res.send(mvs)
 })
 
-routes.get("/:id", [auth, admin, validatorReqParamId], async (req, res) => {
+routes.get("/:id", [auth,validatorReqParamId], async (req, res) => {
   const movie = await Movie.findById(req.params.id);
   return res.send(movie);
 });
 
-routes.post('/', async (req,res) => {
+routes.post('/',[auth,admin], async (req,res) => {
   const movie = await Movie.create({
     title: req.body.title,
     plot: req.body.plot,
@@ -66,13 +66,13 @@ routes.post('/', async (req,res) => {
   });
   res.status(201).send(movie)
 })
-routes.delete('/:id',validatorReqParamId,async( req,res) => {
+routes.delete('/:id',[auth,admin,validatorReqParamId],async( req,res) => {
 
-      const movie = await Movie.findByIdAndDelete(req.params.id);
-      return res.send(movie);
+    const movie = await Movie.findByIdAndDelete(req.params.id);
+    return res.send(movie);
 })
 
-routes.put('/:id',validatorReqParamId, (req, res) => {
+routes.put('/:id',[auth,admin,validatorReqParamId], (req, res) => {
   Movie.findByIdAndUpdate(
     req.params.id,
     {

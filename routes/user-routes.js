@@ -57,6 +57,7 @@ routes.post('/login' ,async (req,res) => {
     if (!verifyPass) return res.status(404).send("Email or Password are invalid !");
 
     const token = user.generateToken();
+    res.header("user",user.name)
     res.header("x-token",token)
     .send(token);
 
